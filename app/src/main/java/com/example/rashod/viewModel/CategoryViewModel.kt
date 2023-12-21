@@ -3,6 +3,7 @@ package com.example.rashod.viewModel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.example.rashod.model.Category
+import com.example.rashod.model.Сonsumption
 
 class CategoryViewModel:ViewModel() {
     private val _category = mutableStateListOf<Category>()
@@ -11,6 +12,10 @@ class CategoryViewModel:ViewModel() {
 
     fun addCategory(category: String) {
         _category.add(Category(category))
+    }
+
+    fun removeCategory(category: Category) {
+        _category.remove(category)
     }
 
     fun getAllCategories(): List<Category> {

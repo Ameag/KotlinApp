@@ -39,17 +39,20 @@ fun AddCategory(viewModel: CategoryViewModel,  navController: NavHostController,
         TextField(
             value = category,
             onValueChange = { category = it },
-            modifier = Modifier.fillMaxWidth().weight(0.3f),
             placeholder = {
                 Text(
                     "Категория",
                 )
             }
         )
-        Button(onClick = {
-            viewModel.addCategory(category)
-            navController.navigate("listConsumption")
-        }) {
+        Button(
+            onClick = {
+                viewModel.addCategory(category)
+                navController.navigate("listConsumption")
+            },
+            modifier = Modifier.padding(16.dp),
+            enabled = category.isNotBlank()
+        ) {
             Text(text = "Сохранить")
         }
     }

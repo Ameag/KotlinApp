@@ -58,18 +58,39 @@ fun ListConsumption(viewModelConsumption: ConsumptionViewModel, viewModelCategor
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {
-        Button(
-            onClick = { navController.navigate("addCategory") },
-            modifier = Modifier.padding(16.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Добавить категорию")
+            Button(
+                onClick = { navController.navigate("addCategory") },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .weight(1f)
+            ) {
+                Text(text = "Добавить категорию")
+            }
+
+            Button(
+                onClick = { navController.navigate("addСonsumption") },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .weight(1f)
+            ) {
+                Text(text = "Добавить расходы")
+            }
         }
         Button(
-            onClick = { navController.navigate("addСonsumption") },
+            onClick = { viewModelConsumption.selectedCategory = null
+                navController.navigate("listConsumption")},
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(text = "Добавить расходы")
+            Text(text = "Сбросить выбор категории")
         }
+
+        Text(
+            text = "Всего потраченно: " + viewModelConsumption.getSum().toString(),
+            fontSize = 20.sp
+        )
         Box(
             modifier = Modifier
                 .padding(top = 20.dp)
@@ -103,6 +124,17 @@ fun ListConsumption(viewModelConsumption: ConsumptionViewModel, viewModelCategor
                     Row(verticalAlignment = Alignment.CenterVertically)
                     {
                         Text(categoryes.category)
+                        IconButton(
+                            onClick = { viewModelCategory.removeCategory(categoryes) },
+                            modifier = Modifier.padding(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Delete",
+                                tint = Color.Black
+                            )
+                        }
+
                     }
                 }, onClick = {
                     viewModelConsumption.selectedCategory = categoryes
@@ -184,13 +216,13 @@ fun ListConsumption(viewModelConsumption: ConsumptionViewModel, viewModelCategor
                     }
                 }
         }
-
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            DisplayJoke()
+        Column ( verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.Start){
+            Surface(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                DisplayJoke()
+            }
         }
-
-
     }
 }

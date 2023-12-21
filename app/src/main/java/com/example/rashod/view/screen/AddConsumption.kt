@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -44,11 +45,12 @@ fun AddConsumption(viewModelConsumption: ConsumptionViewModel, viewModelCategory
     var amountInput by remember { mutableStateOf("") }
     Column(
         modifier = modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
             onClick = { navController.navigate("listConsumption") },
+            Modifier.padding(16.dp)
         ) {
             Text(text = "Назад")
         }
@@ -58,7 +60,7 @@ fun AddConsumption(viewModelConsumption: ConsumptionViewModel, viewModelCategory
         ) {
             TextButton(
                 onClick = { expanded = true },
-                modifier = Modifier
+                modifier = Modifier.padding(16.dp)
                     .background(
                         Color(
                             red = 233,
@@ -78,13 +80,25 @@ fun AddConsumption(viewModelConsumption: ConsumptionViewModel, viewModelCategory
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().padding(16.dp)
+
             ) {
                 categories.forEach { category ->
                     DropdownMenuItem(text = {
                         Row(verticalAlignment = Alignment.CenterVertically)
                         {
                             Text(category.category)
+                            Text(category.category)
+                            IconButton(
+                                onClick = { viewModelCategory.removeCategory(category) },
+                                modifier = Modifier.padding(8.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete",
+                                    tint = Color.Black
+                                )
+                            }
                         }
                     }, onClick = {
                         selectCategory = category.category
@@ -100,14 +114,20 @@ fun AddConsumption(viewModelConsumption: ConsumptionViewModel, viewModelCategory
                 amountInput = newValue.filter { it.isDigit() || it == '.' }
             },
             label = { Text("Сумма") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(16.dp)
         )
-        Button(onClick = {
-            selectCategory2?.let {
-                viewModelConsumption.addСonsumption(amountInput.toInt(), it)
-                navController.navigate("listConsumption")
-            }
-        }) {
+        Button(
+            onClick = {
+                if (selectCategory.isNotBlank() && amountInput.isNotBlank()) {
+                    selectCategory2?.let {
+                        viewModelConsumption.addСonsumption(amountInput.toInt(), it)
+                        navController.navigate("listConsumption")
+                    }
+                }
+            },
+            Modifier.padding(16.dp),
+            enabled = selectCategory.isNotBlank() && amountInput.isNotBlank()
+        ) {
             Text(text = "Сохранить")
         }
     }

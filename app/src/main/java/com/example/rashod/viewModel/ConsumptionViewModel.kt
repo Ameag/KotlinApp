@@ -23,6 +23,14 @@ class ConsumptionViewModel {
         return _сonsumption
     }
 
+    fun getSum(): Int {
+        var count = 0
+        _сonsumption.forEach(){categorys ->
+            count = count + categorys.sum
+        }
+        return count
+    }
+
     fun filterCategory(category: Category) {
         selectedCategory = category
     }
