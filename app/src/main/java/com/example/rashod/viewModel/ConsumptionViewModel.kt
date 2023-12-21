@@ -19,6 +19,10 @@ class ConsumptionViewModel {
         _сonsumption.remove(consumption)
     }
 
+    fun getAllСonsumption(): List<Сonsumption> {
+        return _сonsumption
+    }
+
     fun filterCategory(category: Category) {
         selectedCategory = category
     }

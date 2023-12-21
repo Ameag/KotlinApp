@@ -1,8 +1,10 @@
 package com.example.rashod.view
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -17,12 +19,13 @@ import com.example.rashod.viewModel.CategoryViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.rashod.view.screen.AddCategory
 import androidx.navigation.compose.composable
-import com.example.rashod.view.screen.AddСonsumption
+import com.example.rashod.view.screen.AddConsumption
 import com.example.rashod.view.screen.ListConsumption
 import com.example.rashod.viewModel.ConsumptionViewModel
 
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,10 +43,10 @@ class MainActivity : ComponentActivity() {
                             AddCategory(viewModelCategory ,navController)
                         }
                         composable("listConsumption"){
-                            ListConsumption(viewModelConsumption, navController)
+                            ListConsumption(viewModelConsumption,viewModelCategory, navController)
                         }
                         composable("addСonsumption"){
-                            AddСonsumption(viewModelConsumption,viewModelCategory, navController)
+                            AddConsumption(viewModelConsumption,viewModelCategory, navController)
                         }
                     }
                 }

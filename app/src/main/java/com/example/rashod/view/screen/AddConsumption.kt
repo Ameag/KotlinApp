@@ -34,29 +34,27 @@ import androidx.navigation.NavHostController
 import com.example.rashod.model.Category
 import com.example.rashod.viewModel.CategoryViewModel
 import com.example.rashod.viewModel.ConsumptionViewModel
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddСonsumption(viewModelConsumption: ConsumptionViewModel,viewModelCategory: CategoryViewModel, navController: NavHostController, modifier: Modifier = Modifier) {
+fun AddConsumption(viewModelConsumption: ConsumptionViewModel, viewModelCategory: CategoryViewModel, navController: NavHostController, modifier: Modifier = Modifier) {
     val categories = viewModelCategory.getAllCategories()
     var expanded by remember { mutableStateOf(false) }
     var selectCategory by remember { mutableStateOf("") }
-    var selectCategory2: Category by remember { mutableStateOf(categories.first()) }
+    var selectCategory2: Category? by remember { mutableStateOf(categories.firstOrNull()) }
     var amountInput by remember { mutableStateOf("") }
     Column(
-        modifier = Modifier,
-        verticalArrangement = Arrangement.Center,
+        modifier = modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
             onClick = { navController.navigate("listConsumption") },
-            modifier = Modifier.padding(16.dp)
         ) {
             Text(text = "Назад")
         }
         Box(
             modifier = Modifier
-                .padding(top = 20.dp)
+                .fillMaxWidth()
         ) {
             TextButton(
                 onClick = { expanded = true },
@@ -95,18 +93,20 @@ fun AddСonsumption(viewModelConsumption: ConsumptionViewModel,viewModelCategory
                     })
                 }
             }
-            TextField(
-                value = amountInput,
-                onValueChange = { newValue ->
-                    amountInput = newValue.filter { it.isDigit() || it == '.' }
-                },
-                label = { Text("Сумма") },
-                modifier = Modifier.padding(top = 16.dp)
-            )
         }
+        TextField(
+            value = amountInput,
+            onValueChange = { newValue ->
+                amountInput = newValue.filter { it.isDigit() || it == '.' }
+            },
+            label = { Text("Сумма") },
+            modifier = Modifier.fillMaxWidth()
+        )
         Button(onClick = {
-            viewModelConsumption.addСonsumption(amountInput.toInt(),selectCategory2)
-            navController.navigate("listConsumption")
+            selectCategory2?.let {
+                viewModelConsumption.addСonsumption(amountInput.toInt(), it)
+                navController.navigate("listConsumption")
+            }
         }) {
             Text(text = "Сохранить")
         }
